@@ -4,12 +4,13 @@ import 'package:flutter_complete_guide/widgets/products_grid.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
-class Favorits extends StatefulWidget {
+class CupsOverView extends StatefulWidget {
+  static const routeName = '/cupsOcerView';
   @override
-  _FavoritsState createState() => _FavoritsState();
+  _CupsOverViewState createState() => _CupsOverViewState();
 }
 
-class _FavoritsState extends State<Favorits> {
+class _CupsOverViewState extends State<CupsOverView> {
   var _isInit = true;
   var _isLoading = false;
 
@@ -29,7 +30,7 @@ class _FavoritsState extends State<Favorits> {
         _isLoading = true;
       });
       try {
-        await Provider.of<Products>(context).fetchAndSetProducts();
+        await Provider.of<Products>(context).fetchAndSetProducts(false, 'cups');
         setState(() {
           _isLoading = false;
         });
@@ -51,17 +52,18 @@ class _FavoritsState extends State<Favorits> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            color: HexColor('#f1d2c5'),
+      body: Container(
+          color: HexColor('#f1d2c5'),
+          child: Container(
+              child: ClipRRect(
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(40.0)),
             child: Container(
-                child: ClipRRect(
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(40.0)),
-              child: Container(
-                color: Colors.white,
-                child: _isLoading
-                    ? Center(child: CircularProgressIndicator())
-                    : ProductsGrid(true, 'Favorits'),
-              ),
-            ))));
+              color: Colors.white,
+              child: _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : ProductsGrid(false, 'cups'),
+            ),
+          ))),
+    );
   }
 }

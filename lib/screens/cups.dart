@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/cart.dart';
 import 'package:flutter_complete_guide/providers/products.dart';
+import 'package:flutter_complete_guide/screens/Favorits.dart';
+import 'package:flutter_complete_guide/screens/OverView.dart';
 import 'package:flutter_complete_guide/screens/cart_screen.dart';
+import 'package:flutter_complete_guide/screens/cupsOverView.dart';
 import 'package:flutter_complete_guide/screens/products_overview_screen.dart';
 import 'package:flutter_complete_guide/widgets/app_drawer.dart';
 import 'package:flutter_complete_guide/widgets/badge.dart';
 import 'package:flutter_complete_guide/widgets/products_grid.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
+
 class Cups extends StatefulWidget {
   static const routeName = '/cups';
   @override
@@ -20,22 +24,13 @@ class _CupsState extends State<Cups> {
   var _isLoading = false;
 
   @override
-  void initState() {
-    // Provider.of<Products>(context).fetchAndSetProducts(); // WON'T WORK!
-    // Future.delayed(Duration.zero).then((_) {
-    //   Provider.of<Products>(context).fetchAndSetProducts();
-    // });
-    super.initState();
-  }
-
-  @override
   Future<void> didChangeDependencies() async {
     if (_isInit) {
       setState(() {
         _isLoading = true;
       });
       try {
-        await Provider.of<Products>(context).fetchAndSetProducts(false,'cups');
+        await Provider.of<Products>(context).fetchAndSetProducts(false, 'cups');
         setState(() {
           _isLoading = false;
         });
@@ -47,6 +42,16 @@ class _CupsState extends State<Cups> {
     super.didChangeDependencies();
   }
 
+  List<Object> _pages;
+  int _selectedPageIndex = -1;
+  void initState() {
+    _pages = [
+      OverView(),
+      Favorits(),
+    ];
+    super.initState();
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -56,6 +61,17 @@ class _CupsState extends State<Cups> {
 
   @override
   Widget build(BuildContext context) {
+    void _selectPage(int index) {
+      setState(() {
+        _selectedPageIndex = index;
+        if (_selectedPageIndex == 1) {
+          _showOnlyFavorites = true;
+        } else {
+          _showOnlyFavorites = false;
+        }
+      });
+    }
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
@@ -64,30 +80,6 @@ class _CupsState extends State<Cups> {
           child: AppBar(
             backgroundColor: HexColor('#f1d2c5'),
             actions: <Widget>[
-              PopupMenuButton(
-                onSelected: (FilterOptions selectedValue) {
-                  setState(() {
-                    if (selectedValue == FilterOptions.Favorites) {
-                      _showOnlyFavorites = true;
-                    } else {
-                      _showOnlyFavorites = false;
-                    }
-                  });
-                },
-                icon: Icon(
-                  Icons.more_vert,
-                ),
-                itemBuilder: (_) => [
-                  PopupMenuItem(
-                    child: Text('Only Favorites'),
-                    value: FilterOptions.Favorites,
-                  ),
-                  PopupMenuItem(
-                    child: Text('Show All'),
-                    value: FilterOptions.All,
-                  ),
-                ],
-              ),
               Consumer<Cart>(
                 builder: (_, cart, ch) => Badge(
                   child: ch,
@@ -107,18 +99,44 @@ class _CupsState extends State<Cups> {
         ),
       ),
       drawer: AppDrawer(),
-      body: Container(
-          color: HexColor('#f1d2c5'),
-          child: Container(
-              child: ClipRRect(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(40.0)),
-                child: Container(
-                  color: Colors.white,
-                  child: _isLoading
-                      ? Center(child: CircularProgressIndicator())
-                      : ProductsGrid(_showOnlyFavorites,'cups'),
-                ),
-              ))),
+      body:
+          _selectedPageIndex < 0 ? CupsOverView() : _pages[_selectedPageIndex],
+
+      //  Container(
+      //     color: HexColor('#f1d2c5'),
+      //     child: Container(
+      //         child: ClipRRect(
+      //       borderRadius: BorderRadius.only(topLeft: Radius.circular(40.0)),
+      //       child: Container(
+      //         color: Colors.white,
+      //         child: _isLoading
+      //             ? Center(child: CircularProgressIndicator())
+      //             : ProductsGrid(_showOnlyFavorites, 'cups'),
+      //       ),
+      //     ))),
+
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: _selectPage,
+        backgroundColor: HexColor('#f1d2c5'),
+        selectedItemColor: HexColor('#222831'),
+        // type: BottomNavigationBarType.fixed,
+        items: [
+          BottomNavigationBarItem(
+            backgroundColor: HexColor('#f1d2c5'),
+            icon: _selectedPageIndex == 0
+                ? Icon(Icons.home)
+                : Icon(Icons.home_outlined),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: HexColor('#f1d2c5'),
+            icon: _selectedPageIndex == 1
+                ? Icon(Icons.favorite)
+                : Icon(Icons.favorite_border),
+            label: 'Favorites',
+          ),
+        ],
+      ),
     );
   }
 }

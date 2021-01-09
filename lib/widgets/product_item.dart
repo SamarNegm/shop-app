@@ -15,21 +15,16 @@ class ProductItem extends StatelessWidget {
     final authData = Provider.of<Auth>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(18),
-
       child: GridTile(
-
-
         child: GestureDetector(
-
           onTap: () {
             Navigator.of(context).pushNamed(
               ProductDetailScreen.routeName,
               arguments: product.id,
             );
           },
-
           child: Container(
-            color:  Theme.of(context).accentColor,
+            color: Theme.of(context).accentColor,
             child: Image.network(
               product.imageUrl,
               fit: BoxFit.scaleDown,
@@ -38,25 +33,27 @@ class ProductItem extends StatelessWidget {
         ),
         header: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Text(product.title,
-            style: TextStyle(color: HexColor('#222831'),),
+          child: Text(
+            product.title,
+            style: TextStyle(
+              color: HexColor('#222831'),
+            ),
           ),
         ),
         footer: GridTileBar(
-         // backgroundColor: Colors.black26,
-          leading: Text('\$'+product.price.toString()),
-//          leading: Consumer<Product>(
-//            builder: (ctx, product, _) => IconButton(
-//                  icon: Icon(
-//                    product.isFavorite ? Icons.favorite : Icons.favorite_border,
-//                  ),
-//                  color:HexColor('#222831'),
-//                    onPressed: () {
-//                      product.toggleFavoriteStatus(authData.token,authData.uerId);
-//
-//                  },
-//                ),
-//          ),
+          // backgroundColor: Colors.black26,
+          //    leading: Text('\$'+product.price.toString()),
+          leading: Consumer<Product>(
+            builder: (ctx, product, _) => IconButton(
+              icon: Icon(
+                product.isFavorite ? Icons.favorite : Icons.favorite_border,
+              ),
+              color: HexColor('#222831'),
+              onPressed: () {
+                product.toggleFavoriteStatus(authData.token, authData.uerId);
+              },
+            ),
+          ),
           title: Text(
             '',
             textAlign: TextAlign.center,
@@ -84,7 +81,7 @@ class ProductItem extends StatelessWidget {
                 ),
               );
             },
-            color: HexColor('#222831') ,
+            color: HexColor('#222831'),
           ),
         ),
       ),

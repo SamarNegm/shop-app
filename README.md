@@ -1,6 +1,7 @@
 # shopapp3
 
 A new Flutter application.
+E-commerce application
 
 ## Getting Started
 

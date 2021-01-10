@@ -259,8 +259,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                       onPressed: () {
                         print(totalPrice);
-                        cart.addItem(loadedProduct.id, totalPrice,
-                            loadedProduct.title, itemCount);
+                        cart.addItem(
+                            loadedProduct.id,
+                            totalPrice,
+                            loadedProduct.title,
+                            itemCount,
+                            loadedProduct.imageUrl);
                         setState(() {
                           added = true;
                         });

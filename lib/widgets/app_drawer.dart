@@ -47,7 +47,10 @@ class AppDrawer extends StatelessWidget {
           ),
           Divider(),
           ListTile(
-            leading: Icon(MyFlutterApp.coffee),
+            leading: Icon(
+              MyFlutterApp.coffee,
+              color: Theme.of(context).primaryColor,
+            ),
             title: Text('Cups'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(Cups.routeName);

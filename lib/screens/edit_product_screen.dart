@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/icons/my_flutter_app_icons.dart';
 import 'package:image_picker/image_picker.dart';
 //import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -18,13 +19,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _picker = ImagePicker();
 
   Future getImage() async {
-    print('hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
-    final pickedFile = await _picker.getImage(source: ImageSource.gallery,
+    final pickedFile = await _picker.getImage(
+      source: ImageSource.gallery,
       imageQuality: 50,
       maxWidth: 150,
       maxHeight: 200,
     );
-    print('hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii2');
     setState(() {
       if (pickedFile != null) {
         setState(() {
@@ -52,7 +52,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _descriptionFocusNode = FocusNode();
   final _type = FocusNode();
   final _form = GlobalKey<FormState>();
-  final _scaffoldKey=GlobalKey<ScaffoldState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   var isLoading = false;
   var _editedProduct = Product(
     id: null,
@@ -66,7 +66,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     'description': '',
     'price': '',
     'imageUrl': '',
-    'type':'',
+    'type': '',
   };
   var _isInit = true;
 
@@ -106,17 +106,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   Future<void> _saveForm() async {
     final isValid = _form.currentState.validate();
-    if(_storedImage==null)
-      {
-        print('hi');
+    if (_storedImage == null) {
+      print('hi');
 
-       _scaffoldKey.currentState.showSnackBar(
-            SnackBar(
-            content: Text('Please pick an image')
-            )
-        );
-        return;
-      }
+      _scaffoldKey.currentState
+          .showSnackBar(SnackBar(content: Text('Please pick an image')));
+      return;
+    }
     if (!isValid) {
       return null;
     }
@@ -133,7 +129,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
       }
     } else {
       try {
-        await Provider.of<Products>(context, listen: false).addProduct(_editedProduct,_storedImage);
+        await Provider.of<Products>(context, listen: false)
+            .addProduct(_editedProduct, _storedImage);
       } catch (error) {
         return showDialog<Null>(
           context: context,
@@ -176,7 +173,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.save),
-            onPressed:_saveForm,
+            onPressed: _saveForm,
           ),
         ],
       ),
@@ -190,32 +187,39 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 key: _form,
                 child: ListView(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 70,right: 70),
-                      child: ClipRRect(
-                        borderRadius:  BorderRadius.circular(40),
-                        child: Container(
-                          width: 100,
-                          height: 140,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.grey,
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 200,
+                            height: 200,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: Colors.grey,
+                                ),
+                                color: Colors.grey[200]),
+                            child: FittedBox(
+                              child: _storedImage == null
+                                  ? Container(
+                                      color: Colors.grey[350],
+                                    )
+                                  : Image.file(_storedImage),
+                              fit: BoxFit.contain,
                             ),
                           ),
-                          child: FittedBox(
-                            child: _storedImage==null?Container(width:100,height: 140,color:Theme.of(context).accentColor,):Image.file(_storedImage),
-                              fit: BoxFit.cover,
-
-                            ),
-                          ),
-                      ),
-                    ),
-
+                        ]),
 
                     FlatButton.icon(
-                      icon: Icon(Icons.image),
-                      label: Text('Pick image'),
+                      icon: Icon(
+                        Icons.image_outlined,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      label: Text(
+                        'Pick image',
+                        style: TextStyle(color: Theme.of(context).primaryColor),
+                      ),
                       onPressed: getImage,
                     ),
                     TextFormField(
@@ -239,9 +243,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             imageUrl: _editedProduct.imageUrl,
                             id: _editedProduct.id,
                             isFavorite: _editedProduct.isFavorite,
-                            type: _editedProduct.type
-
-                        );
+                            type: _editedProduct.type);
                       },
                     ),
                     TextFormField(
@@ -251,8 +253,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       keyboardType: TextInputType.number,
                       focusNode: _priceFocusNode,
                       onFieldSubmitted: (_) {
-                        FocusScope.of(context)
-                            .requestFocus(_type);
+                        FocusScope.of(context).requestFocus(_type);
                       },
                       validator: (value) {
                         if (value.isEmpty) {
@@ -268,13 +269,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                       onSaved: (value) {
                         _editedProduct = Product(
-                            title: _editedProduct.title,
-                            price: double.parse(value),
-                            description: _editedProduct.description,
-                            imageUrl: _editedProduct.imageUrl,
-                            id: _editedProduct.id,
-                            isFavorite: _editedProduct.isFavorite,
-                            type: _editedProduct.type,
+                          title: _editedProduct.title,
+                          price: double.parse(value),
+                          description: _editedProduct.description,
+                          imageUrl: _editedProduct.imageUrl,
+                          id: _editedProduct.id,
+                          isFavorite: _editedProduct.isFavorite,
+                          type: _editedProduct.type,
                         );
                       },
                     ),
@@ -301,8 +302,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             imageUrl: _editedProduct.imageUrl,
                             id: _editedProduct.id,
                             isFavorite: _editedProduct.isFavorite,
-                            type: value
-                        );
+                            type: value);
                       },
                     ),
                     TextFormField(
@@ -322,17 +322,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                       onSaved: (value) {
                         _editedProduct = Product(
-                          title: _editedProduct.title,
-                          price: _editedProduct.price,
-                          description: value,
-                          imageUrl: _editedProduct.imageUrl,
-                          id: _editedProduct.id,
-                          isFavorite: _editedProduct.isFavorite,
-                          type: _editedProduct.type
-                        );
+                            title: _editedProduct.title,
+                            price: _editedProduct.price,
+                            description: value,
+                            imageUrl: _editedProduct.imageUrl,
+                            id: _editedProduct.id,
+                            isFavorite: _editedProduct.isFavorite,
+                            type: _editedProduct.type);
                       },
                     ),
-
 
 //                    Row(
 //                      crossAxisAlignment: CrossAxisAlignment.end,

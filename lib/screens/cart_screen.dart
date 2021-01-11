@@ -26,9 +26,13 @@ class CartScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    SizedBox(
+                        height: 40,
+                        child:
+                            Image(image: AssetImage('assets/images/bag.png'))),
                     Text(
-                      'My bag',
-                      style: TextStyle(fontSize: 35),
+                      '  My bag',
+                      style: TextStyle(fontSize: 30),
                     ),
                   ],
                 ),

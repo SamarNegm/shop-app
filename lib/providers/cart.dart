@@ -85,6 +85,7 @@ class Cart with ChangeNotifier {
                 title: existingCartItem.title,
                 price: existingCartItem.price,
                 quantity: existingCartItem.quantity - 1,
+                url: existingCartItem.url,
               ));
     } else {
       _items.remove(productId);

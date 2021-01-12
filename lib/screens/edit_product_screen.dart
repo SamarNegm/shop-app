@@ -87,6 +87,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           'description': _editedProduct.description,
           'price': _editedProduct.price.toString(),
           'imageUrl': _editedProduct.imageUrl,
+          'type': _editedProduct.type,
         };
         //   _imageUrlController.text = _editedProduct.imageUrl;
       }
@@ -106,7 +107,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   Future<void> _saveForm() async {
     final isValid = _form.currentState.validate();
-    if (_storedImage == null) {
+    if (_storedImage == null && _editedProduct.imageUrl == '') {
       print('hi');
 
       _scaffoldKey.currentState
@@ -201,11 +202,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 ),
                                 color: Colors.grey[200]),
                             child: FittedBox(
-                              child: _storedImage == null
-                                  ? Container(
-                                      color: Colors.grey[350],
-                                    )
-                                  : Image.file(_storedImage),
+                              child: _editedProduct.imageUrl != ''
+                                  ? Image.network(_editedProduct.imageUrl)
+                                  : _storedImage == null
+                                      ? Container(
+                                          color: Colors.grey[350],
+                                        )
+                                      : Image.file(_storedImage),
                               fit: BoxFit.contain,
                             ),
                           ),

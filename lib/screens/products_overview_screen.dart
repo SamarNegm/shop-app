@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/screens/Favorits.dart';
 import 'package:flutter_complete_guide/screens/OverView.dart';
 import 'package:flutter_complete_guide/screens/cupsOverView.dart';
+import 'package:flutter_complete_guide/screens/edit_product_screen.dart';
 import 'package:flutter_complete_guide/screens/profil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
@@ -80,6 +81,14 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       ),
       drawer: AppDrawer(),
       body: _pages[_selectedPageIndex],
+      floatingActionButton: FloatingActionButton(
+        elevation: 4.0,
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).pushNamed(EditProductScreen.routeName);
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
 //      Container(
 //          color: HexColor('#f1d2c5'),
 //          child: Container(
@@ -92,35 +101,41 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
 //                  : ProductsGrid(_showOnlyFavorites,'Discover'),
 //            ),
 //          ))),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: _selectPage,
-        backgroundColor: HexColor('#f1d2c5'),
-        selectedItemColor: HexColor('#222831'),
-        currentIndex: _selectedPageIndex,
-        // type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            backgroundColor: HexColor('#f1d2c5'),
-            icon: _selectedPageIndex == 0
-                ? Icon(Icons.home)
-                : Icon(Icons.home_outlined),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: HexColor('#f1d2c5'),
-            icon: _selectedPageIndex == 1
-                ? Icon(Icons.favorite)
-                : Icon(Icons.favorite_border),
-            label: 'Favorites',
-          ),
-           BottomNavigationBarItem(
-                backgroundColor: HexColor('#f1d2c5'),
-                icon: _selectedPageIndex == 2
-                    ? Icon(Icons.person)
-                    : Icon(Icons.person_outlined),
-                label: 'Profile',
-              ),
-        ],
+      bottomNavigationBar: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(40),
+          topRight: Radius.circular(40),
+        ),
+        child: BottomNavigationBar(
+          onTap: _selectPage,
+          backgroundColor: HexColor('#f1d2c5'),
+          selectedItemColor: HexColor('#222831'),
+          currentIndex: _selectedPageIndex,
+          // type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              backgroundColor: HexColor('#f1d2c5'),
+              icon: _selectedPageIndex == 0
+                  ? Icon(Icons.home)
+                  : Icon(Icons.home_outlined),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: HexColor('#f1d2c5'),
+              icon: _selectedPageIndex == 1
+                  ? Icon(Icons.favorite)
+                  : Icon(Icons.favorite_border),
+              label: 'Favorites',
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: HexColor('#f1d2c5'),
+              icon: _selectedPageIndex == 2
+                  ? Icon(Icons.person)
+                  : Icon(Icons.person_outlined),
+              label: 'Profile',
+            ),
+          ],
+        ),
       ),
     );
   }

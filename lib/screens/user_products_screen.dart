@@ -85,58 +85,45 @@ class _UserProductsScreenState extends State<UserProductsScreen> {
     final productsData = Provider.of<Products>(context);
     print('rebilding....');
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context).pushNamed(EditProductScreen.routeName);
-            },
-          )
-        ],
-      ),
-      drawer: AppDrawer(),
-      body: _pages[_selectedPageIndex],
-      bottomNavigationBar: new Stack(
-        overflow: Overflow.visible,
-        alignment: new FractionalOffset(.5, 1.0),
-        children: [
-          FloatingActionButton(
-            onPressed: null,
-            child: Icon(Icons.add),
-          ),
-          BottomNavigationBar(
-            onTap: _selectPage,
-            backgroundColor: HexColor('#f1d2c5'),
-            selectedItemColor: HexColor('#222831'),
-            currentIndex: _selectedPageIndex,
-            // type: BottomNavigationBarType.fixed,
-            items: [
-              BottomNavigationBarItem(
-                backgroundColor: HexColor('#f1d2c5'),
-                icon: _selectedPageIndex == 0
-                    ? Icon(Icons.home)
-                    : Icon(Icons.home_outlined),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                backgroundColor: HexColor('#f1d2c5'),
-                icon: _selectedPageIndex == 1
-                    ? Icon(Icons.favorite)
-                    : Icon(Icons.favorite_border),
-                label: 'Favorites',
-              ),
-              BottomNavigationBarItem(
-                backgroundColor: HexColor('#f1d2c5'),
-                icon: _selectedPageIndex == 2
-                    ? Icon(Icons.person)
-                    : Icon(Icons.person_outlined),
-                label: 'Profile',
-              ),
-            ],
-          )
-        ],
-      ),
-    );
+        drawer: AppDrawer(),
+        body: _pages[_selectedPageIndex],
+        floatingActionButton: FloatingActionButton(
+          elevation: 4.0,
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.of(context).pushNamed(EditProductScreen.routeName);
+          },
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: _selectPage,
+          backgroundColor: HexColor('#f1d2c5'),
+          selectedItemColor: HexColor('#222831'),
+          currentIndex: _selectedPageIndex,
+          // type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              backgroundColor: HexColor('#f1d2c5'),
+              icon: _selectedPageIndex == 0
+                  ? Icon(Icons.home)
+                  : Icon(Icons.home_outlined),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: HexColor('#f1d2c5'),
+              icon: _selectedPageIndex == 1
+                  ? Icon(Icons.favorite)
+                  : Icon(Icons.favorite_border),
+              label: 'Favorites',
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: HexColor('#f1d2c5'),
+              icon: _selectedPageIndex == 2
+                  ? Icon(Icons.person)
+                  : Icon(Icons.person_outlined),
+              label: 'Profile',
+            ),
+          ],
+        ));
   }
 }

@@ -35,18 +35,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
       }
     });
   }
-//  Future<void> _takePicture() async {
-//    final imageFile = await ImagePicker().getImage(
-//      source: ImageSource.gallery,
-//      maxWidth: 600,
-//    );
-//    setState(() {
-//      _storedImage = imageFile as File;
-//    });
-////    final appDir = await syspaths.getApplicationDocumentsDirectory();
-////    final fileName = path.basename(imageFile.path);
-//  //  final savedImage = await imageFile.copy('${appDir.path}/$fileName');
-//  }
 
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();

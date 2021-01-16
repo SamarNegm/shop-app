@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/screens/Favorits.dart';
 import 'package:flutter_complete_guide/screens/OverView.dart';
 import 'package:flutter_complete_guide/screens/cupsOverView.dart';
+import 'package:flutter_complete_guide/screens/profil.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
@@ -33,6 +34,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     _pages = [
       OverView(),
       Favorits(),
+      profile(),
     ];
     super.initState();
   }
@@ -111,6 +113,13 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                 : Icon(Icons.favorite_border),
             label: 'Favorites',
           ),
+           BottomNavigationBarItem(
+                backgroundColor: HexColor('#f1d2c5'),
+                icon: _selectedPageIndex == 2
+                    ? Icon(Icons.person)
+                    : Icon(Icons.person_outlined),
+                label: 'Profile',
+              ),
         ],
       ),
     );

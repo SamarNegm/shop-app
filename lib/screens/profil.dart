@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/products.dart';
+import 'package:flutter_complete_guide/widgets/user_product_item.dart';
 import 'package:flutter_complete_guide/widgets/user_product_item2.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
@@ -58,7 +59,7 @@ class _profileState extends State<profile> {
 
   @override
   Widget build(BuildContext context) {
-    final productsData = Provider.of<Products>(context);
+    final productsData = Provider.of<Products>(context).items;
     return Scaffold(
         body: Container(
             color: HexColor('#f1d2c5'),
@@ -88,11 +89,11 @@ class _profileState extends State<profile> {
                                             (BuildContext ctx, int index) {
                                           return Padding(
                                             padding: const EdgeInsets.only(
-                                                top: 20.0, bottom: 10),
+                                                top: 10.0, bottom: 10),
                                             child: Column(
                                               children: [
                                                 CircleAvatar(
-                                                  radius: 70,
+                                                  radius: 60,
                                                 ),
                                                 Padding(
                                                   padding:
@@ -114,24 +115,21 @@ class _profileState extends State<profile> {
                                         ),
                                         delegate: SliverChildBuilderDelegate(
                                             (BuildContext ctx, int i) {
-                                          print(productsData.items[i].title +
-                                              ' title');
+                                          print(
+                                              productsData[i].title + ' title');
 
                                           return Padding(
                                             padding: i % 2 == 1
                                                 ? EdgeInsets.only(right: 12)
                                                 : EdgeInsets.only(left: 12),
                                             child: userProductItem2(
-                                              id: productsData.items[i].id,
-                                              title:
-                                                  productsData.items[i].title,
-                                              imageUrl: productsData
-                                                  .items[i].imageUrl,
+                                              id: productsData[i].id,
+                                              title: productsData[i].title,
+                                              imageUrl:
+                                                  productsData[i].imageUrl,
                                             ),
                                           );
-                                        },
-                                            childCount:
-                                                productsData.items.length),
+                                        }, childCount: productsData.length),
                                       ),
                                     ],
                                   ),

@@ -58,7 +58,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
           SizedBox(
-              height: deviceSize.height * .7,
+              height: deviceSize.height * .8,
               child: SingleChildScrollView(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -119,12 +119,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                           CrossAxisAlignment.end,
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        Container(
-                                          height: deviceSize.height * .2,
-                                          width: deviceSize.height * .2,
-                                          child: Image.network(
-                                            loadedProduct.imageUrl,
-                                            fit: BoxFit.contain,
+                                        Hero(
+                                          tag:loadedProduct.id,
+                                          child: Container(
+                                            height: deviceSize.height * .2,
+                                            width: deviceSize.height * .2,
+                                            child: Image.network(
+                                              loadedProduct.imageUrl,
+                                              fit: BoxFit.contain,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -222,17 +225,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               ])),
                     ]),
               )),
-          Padding(
-            padding: const EdgeInsets.only(
-                bottom: 15.0, left: 30, right: 30, top: 15),
-            child: SizedBox(
-              height: 60,
-              width: double.infinity,
-              child: added
-                  ? Row(
-                      children: [
-                        Text('Item added to chart'),
-                        RaisedButton(
+          added
+              ? Row(
+                  children: [
+                    Text('Item added to chart'),
+                    Container(
+                      margin: EdgeInsets.all(15),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
                           child: Text(
                             'Open',
                             style: TextStyle(color: Colors.black, fontSize: 24),
@@ -250,36 +251,46 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           textColor:
                               Theme.of(context).primaryTextTheme.button.color,
                         ),
-                      ],
-                    )
-                  : RaisedButton(
-                      child: Text(
-                        'Add to chart',
-                        style: TextStyle(color: Colors.black, fontSize: 24),
                       ),
-                      onPressed: () {
-                        print(totalPrice);
-                        cart.addItem(
-                            loadedProduct.id,
-                            totalPrice,
-                            loadedProduct.title,
-                            itemCount,
-                            loadedProduct.imageUrl);
-                        setState(() {
-                          added = true;
-                        });
-                      },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                      color: Theme.of(context).primaryColor,
-                      textColor:
-                          Theme.of(context).primaryTextTheme.button.color,
                     ),
-            ),
-          ),
+                  ],
+                )
+              : SizedBox(
+                  height: 80,
+                  width: double.infinity,
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 30),
+                      child: RaisedButton(
+                        child: Text(
+                          'Add to chart',
+                          style: TextStyle(color: Colors.black, fontSize: 24),
+                        ),
+                        onPressed: () {
+                          print(totalPrice);
+                          cart.addItem(
+                              loadedProduct.id,
+                              totalPrice,
+                              loadedProduct.title,
+                              itemCount,
+                              loadedProduct.imageUrl);
+                          setState(() {
+                            added = true;
+                          });
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 8.0),
+                        color: Theme.of(context).primaryColor,
+                        textColor:
+                            Theme.of(context).primaryTextTheme.button.color,
+                      ),
+                    ),
+                  ),
+                ),
         ]));
   }
 }

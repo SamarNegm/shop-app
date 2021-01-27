@@ -23,11 +23,14 @@ class ProductItem extends StatelessWidget {
               arguments: product.id,
             );
           },
-          child: Container(
-            color: Theme.of(context).accentColor,
-            child: Image.network(
-              product.imageUrl,
-              fit: BoxFit.scaleDown,
+          child: Hero(
+            tag:product.id,
+            child: Container(
+              color: Theme.of(context).accentColor,
+              child: Image.network(
+                product.imageUrl,
+                fit: BoxFit.scaleDown,
+              ),
             ),
           ),
         ),

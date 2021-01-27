@@ -14,7 +14,7 @@ import './providers/cart.dart';
 import './providers/orders.dart';
 import './providers/auth.dart';
 import './screens/orders_screen.dart';
-import './screens/user_products_screen.dart';
+
 import './screens/edit_product_screen.dart';
 
 void main() => runApp(MyApp());
@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Auth(),
         ),
+        // ignore: missing_required_param
         ChangeNotifierProxyProvider<Auth, Products>(
           update: (ctx, auth, previousProducts) => Products(
               auth.token,
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Cart(),
         ),
+        // ignore: missing_required_param
         ChangeNotifierProxyProvider<Auth, Orders>(
           update: (ctx, auth, previousOrders) => Orders(auth.token,
               previousOrders == null ? [] : previousOrders.orders, auth.uerId),

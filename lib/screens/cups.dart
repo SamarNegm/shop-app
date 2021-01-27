@@ -5,7 +5,9 @@ import 'package:flutter_complete_guide/screens/Favorits.dart';
 import 'package:flutter_complete_guide/screens/OverView.dart';
 import 'package:flutter_complete_guide/screens/cart_screen.dart';
 import 'package:flutter_complete_guide/screens/cupsOverView.dart';
+import 'package:flutter_complete_guide/screens/edit_product_screen.dart';
 import 'package:flutter_complete_guide/screens/products_overview_screen.dart';
+import 'package:flutter_complete_guide/screens/profil.dart';
 import 'package:flutter_complete_guide/widgets/app_drawer.dart';
 import 'package:flutter_complete_guide/widgets/badge.dart';
 import 'package:flutter_complete_guide/widgets/products_grid.dart';
@@ -48,6 +50,7 @@ class _CupsState extends State<Cups> {
     _pages = [
       OverView(),
       Favorits(),
+      profile(),
     ];
     super.initState();
   }
@@ -114,28 +117,48 @@ class _CupsState extends State<Cups> {
       //             : ProductsGrid(_showOnlyFavorites, 'cups'),
       //       ),
       //     ))),
-
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: _selectPage,
-        backgroundColor: HexColor('#f1d2c5'),
-        selectedItemColor: HexColor('#222831'),
-        // type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            backgroundColor: HexColor('#f1d2c5'),
-            icon: _selectedPageIndex == 0
-                ? Icon(Icons.home)
-                : Icon(Icons.home_outlined),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: HexColor('#f1d2c5'),
-            icon: _selectedPageIndex == 1
-                ? Icon(Icons.favorite)
-                : Icon(Icons.favorite_border),
-            label: 'Favorites',
-          ),
-        ],
+      floatingActionButton: FloatingActionButton(
+        elevation: 4.0,
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).pushNamed(EditProductScreen.routeName);
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      bottomNavigationBar: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(40),
+          topRight: Radius.circular(40),
+        ),
+        child: BottomNavigationBar(
+          onTap: _selectPage,
+          backgroundColor: HexColor('#f1d2c5'),
+          selectedItemColor: HexColor('#222831'),
+          // type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              backgroundColor: HexColor('#f1d2c5'),
+              icon: _selectedPageIndex == 0
+                  ? Icon(Icons.home)
+                  : Icon(Icons.home_outlined),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: HexColor('#f1d2c5'),
+              icon: _selectedPageIndex == 1
+                  ? Icon(Icons.favorite)
+                  : Icon(Icons.favorite_border),
+              label: 'Favorites',
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: HexColor('#f1d2c5'),
+              icon: _selectedPageIndex == 2
+                  ? Icon(Icons.person)
+                  : Icon(Icons.person_outlined),
+              label: 'Profile',
+            ),
+          ],
+        ),
       ),
     );
   }

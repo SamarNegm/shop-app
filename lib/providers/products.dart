@@ -47,6 +47,7 @@ class Products with ChangeNotifier {
   // }
   Future<void> fetchAndSetProducts(
       [bool filterByUser = false, String type = '']) async {
+    _items = [];
     final filterString =
         filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
     final typeString = type != '' ? 'orderBy="type"&equalTo="$type"' : '';
@@ -129,8 +130,10 @@ class Products with ChangeNotifier {
           type: product.type,
           id: json.decode(response.body)['name']);
       _items.add(newProduct);
+      for (var item in _items) {
+        print(item.title);
+      }
       notifyListeners();
-      print(newProduct.imageUrl + '  a7a::::');
       updateProduct(json.decode(response.body)['name'], newProduct);
       // _items.insert(0, newProduct); // at the start of the list
 
@@ -142,7 +145,6 @@ class Products with ChangeNotifier {
 
   Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
-    print(newProduct.imageUrl + '  a7a222222222222');
     if (prodIndex >= 0) {
       final url =
           'https://shop-app-8948a-default-rtdb.firebaseio.com/products/$id.json?auth=$autToken';

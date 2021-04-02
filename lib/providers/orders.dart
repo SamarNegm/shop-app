@@ -1,22 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_complete_guide/models/CartItemModel.dart';
+import 'package:flutter_complete_guide/models/orderItemModel.dart';
 import 'package:http/http.dart' as http;
 import './cart.dart';
-
-class OrderItem {
-  final String id;
-  final double amount;
-  final List<CartItem> products;
-  final DateTime dateTime;
-
-  OrderItem({
-    @required this.id,
-    @required this.amount,
-    @required this.products,
-    @required this.dateTime,
-  });
-}
 
 class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
@@ -31,8 +19,10 @@ class Orders with ChangeNotifier {
   Future<void> fetchAndSetOrders() async {
     final url =
         'https://shop-app-8948a-default-rtdb.firebaseio.com/orders/$userId.json?auth=$token';
+    final uri = Uri.parse(url);
+
     try {
-      final response = await http.get(url);
+      final response = await http.get(uri);
       final chatchedData = json.decode(response.body) as Map<String, dynamic>;
       if (chatchedData == null) {
         _orders = [];
@@ -47,7 +37,7 @@ class Orders with ChangeNotifier {
           dateTime: DateTime.parse(order['dateTime']),
           products: (order['products'] as List<dynamic>)
               .map(
-                (e) => CartItem(
+                (e) => CartItemModel(
                     id: e['id'],
                     title: e['title'],
                     quantity: e['quantity'],
@@ -66,13 +56,14 @@ class Orders with ChangeNotifier {
     }
   }
 
-  Future<void> addOrder(List<CartItem> cartProducts, double total) async {
+  Future<void> addOrder(List<CartItemModel> cartProducts, double total) async {
     final url =
         'https://shop-app-8948a-default-rtdb.firebaseio.com/orders/$userId.json?auth=$token';
+    final uri = Uri.parse(url);
     var date = DateTime.now();
     final timestamp = DateTime.now();
     final response = await http.post(
-      url,
+      uri,
       body: json.encode({
         'amount': total,
         'dateTime': timestamp.toIso8601String(),

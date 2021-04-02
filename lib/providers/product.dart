@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/providers/products.dart';
-import 'package:provider/provider.dart';
 
 class Product with ChangeNotifier {
   final String id;
@@ -37,7 +35,8 @@ class Product with ChangeNotifier {
     try {
       final url =
           'https://shop-app-8948a-default-rtdb.firebaseio.com/favoriteProducts/$userId/$id.json?auth=$token';
-           http.Response response = await http.put(url,
+      final uri = Uri.parse(url);
+      http.Response response = await http.put(uri,
           body: json.encode(
             isFavorite,
           ));

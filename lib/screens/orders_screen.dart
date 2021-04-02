@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/orders.dart' show Orders;
-import '../widgets/order_item.dart';
 import '../widgets/app_drawer.dart';
+import '../widgets/order_item.dart';
 
 class OrdersScreen extends StatelessWidget {
   static const routeName = '/orders';
@@ -27,7 +27,8 @@ class OrdersScreen extends StatelessWidget {
               // ...
               // Do error handling stuff
               return Center(
-                child: Text('An error occurred!'+dataSnapshot.error.toString()),
+                child:
+                    Text('An error occurred!' + dataSnapshot.error.toString()),
               );
             } else {
               return Consumer<Orders>(

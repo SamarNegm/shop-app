@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/products.dart';
 import 'package:flutter_complete_guide/screens/edit_product_screen.dart';
@@ -36,7 +38,13 @@ class userProductItem2 extends StatelessWidget {
                   Icons.edit,
                   color: HexColor('#222831'),
                 ),
-                onPressed: () {
+                onPressed: () async {
+                  print('id is ' + id);
+                  await Provider.of<Products>(context, listen: false)
+                      .fetchAndSetProducts(true, '');
+                  final productsData =
+                      await Provider.of<Products>(context, listen: false).items;
+                  print('poddata len' + productsData.length.toString());
                   Navigator.of(context)
                       .pushNamed(EditProductScreen.routeName, arguments: id);
                 },

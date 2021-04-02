@@ -41,6 +41,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _type = FocusNode();
   final _form = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  List productsData = [];
   var isLoading = false;
   var _editedProduct = Product(
     id: null,
@@ -65,12 +66,26 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   @override
-  void didChangeDependencies() {
+  Future<void> didChangeDependencies() async {
     if (_isInit) {
       final productId = ModalRoute.of(context).settings.arguments as String;
+      print('id 2 is ' + productId.toString());
       if (productId != null) {
-        _editedProduct =
-            Provider.of<Products>(context, listen: false).findById(productId);
+        try {
+          var items = Provider.of<Products>(context, listen: false).items;
+          print(items.length.toString() + ' items');
+        } catch (error) {
+          print(error.toString());
+          throw (error);
+        }
+        await Provider.of<Products>(context, listen: false)
+            .fetchAndSetProducts(true, '');
+        productsData =
+            await Provider.of<Products>(context, listen: false).items;
+        print('poddata len2  ' + productsData.length.toString());
+        _editedProduct = await Provider.of<Products>(context, listen: false)
+            .findById(productId);
+        print('id 2 is ' + _editedProduct.description);
         _initValues = {
           'title': _editedProduct.title,
           'description': _editedProduct.description,
@@ -79,9 +94,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
           'type': _editedProduct.type,
         };
         //   _imageUrlController.text = _editedProduct.imageUrl;
+        setState(() {
+          _isInit = false;
+        });
+      } else {
+        setState(() {
+          _isInit = false;
+        });
       }
     }
-    _isInit = false;
+
     super.didChangeDependencies();
   }
 
@@ -99,7 +121,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     if (_storedImage == null && _editedProduct.imageUrl == '') {
       print('hi');
 
-      _scaffoldKey.currentState
+      ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Please pick an image')));
       return;
     }
@@ -111,24 +133,20 @@ class _EditProductScreenState extends State<EditProductScreen> {
       isLoading = true;
     });
     if (_editedProduct.id != null) {
+      print('hi not null');
       try {
         await Provider.of<Products>(context, listen: false)
-            .updateProduct(_editedProduct.id, _editedProduct);
+            .updateProduct(_editedProduct.id, _editedProduct, productsData);
       } catch (error) {
-        throw error;
-      }
-    } else {
-      try {
-        await Provider.of<Products>(context, listen: false)
-            .addProduct(_editedProduct, _storedImage);
-      } catch (error) {
+        print('error ' + error.toString());
+        isLoading = false;
         return showDialog<Null>(
           context: context,
           builder: (ctx) => AlertDialog(
             title: Text('An error occurred!'),
             content: Text('Something went wrong.'),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('Okay'),
                 onPressed: () {
                   Navigator.of(ctx).pop();
@@ -137,13 +155,29 @@ class _EditProductScreenState extends State<EditProductScreen> {
             ],
           ),
         );
-//      } finally {
-//        setState(() {
-//          isLoading = false;
-//        });
-//        Navigator.of(context).pop();
-//      }
-        ;
+        throw error;
+      }
+    } else {
+      try {
+        await Provider.of<Products>(context, listen: false)
+            .addProduct(_editedProduct, _storedImage);
+      } catch (error) {
+        isLoading = false;
+        return showDialog<Null>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text('An error occurred!'),
+            content: Text('Something went wrong.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Okay'),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+              )
+            ],
+          ),
+        );
       }
     }
     setState(() {
@@ -156,6 +190,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('isint ' + _isInit.toString() + '  lloo ' + isLoading.toString());
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -167,7 +202,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           ),
         ],
       ),
-      body: isLoading
+      body: _isInit || isLoading
           ? Center(
               child: CircularProgressIndicator(),
             )

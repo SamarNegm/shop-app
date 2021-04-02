@@ -31,7 +31,7 @@ class Products with ChangeNotifier {
   }
 
   Product findById(String id) {
-    print(_items.length);
+    print(items.length);
     if (items.length > 0) return _items.firstWhere((prod) => prod.id == id);
     return null;
   }
@@ -54,10 +54,10 @@ class Products with ChangeNotifier {
 
     String url =
         'https://shop-app-8948a-default-rtdb.firebaseio.com/products.json?auth=$autToken&$filterString&$typeString';
+    final uri = Uri.parse(url);
 
-    print('url ' + url);
     try {
-      final response = await http.get(url);
+      final response = await http.get(uri);
       print(response.body.toString());
       final chatchedData = json.decode(response.body) as Map<String, dynamic>;
       if (chatchedData['error'] != null) {
@@ -69,8 +69,8 @@ class Products with ChangeNotifier {
 
         return;
       }
-      final favRespons = await http.get(
-          'https://shop-app-8948a-default-rtdb.firebaseio.com/favoriteProducts/$userId.json?auth=$autToken');
+      final favRespons = await http.get(Uri.parse(
+          'https://shop-app-8948a-default-rtdb.firebaseio.com/favoriteProducts/$userId.json?auth=$autToken'));
       final chatchedfav = json.decode(favRespons.body);
       final List<Product> loadedProducts = [];
 
@@ -87,7 +87,8 @@ class Products with ChangeNotifier {
         ));
       });
 
-      _items = loadedProducts;
+      _items = [...loadedProducts];
+      print('len ' + _items.length.toString());
       notifyListeners();
     } catch (error) {
       throw (error);
@@ -97,8 +98,9 @@ class Products with ChangeNotifier {
   Future<void> addProduct(Product product, File image) async {
     final url =
         'https://shop-app-8948a-default-rtdb.firebaseio.com/products.json?auth=$autToken';
+    final uri = Uri.parse(url);
     try {
-      final response = await http.post(url,
+      final response = await http.post(uri,
           body: json.encode({
             'title': product.title,
             'description': product.description,
@@ -118,7 +120,7 @@ class Products with ChangeNotifier {
           .child('userimage')
           .child(json.decode(response.body)['name'] + '.jpg');
       print('ok2  ' + autToken);
-      await ref.putFile(image).onComplete;
+      await ref.putFile(image);
       print('ok3');
       final imageUrl = await ref.getDownloadURL();
       print('ok4 ' + imageUrl);
@@ -134,7 +136,7 @@ class Products with ChangeNotifier {
         print(item.title);
       }
       notifyListeners();
-      updateProduct(json.decode(response.body)['name'], newProduct);
+      updateProduct(json.decode(response.body)['name'], newProduct, _items);
       // _items.insert(0, newProduct); // at the start of the list
 
     } catch (error) {
@@ -143,12 +145,14 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future<void> updateProduct(String id, Product newProduct) async {
-    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+  Future<void> updateProduct(String id, Product newProduct, List items) async {
+    final prodIndex = items.indexWhere((prod) => prod.id == id);
+    print('prodIndex ' + prodIndex.toString() + '  ' + items.length.toString());
     if (prodIndex >= 0) {
       final url =
           'https://shop-app-8948a-default-rtdb.firebaseio.com/products/$id.json?auth=$autToken';
-      await http.patch(url,
+      final uri = Uri.parse(url);
+      await http.patch(uri,
           body: json.encode({
             'title': newProduct.title,
             'description': newProduct.description,
@@ -156,7 +160,8 @@ class Products with ChangeNotifier {
             'price': newProduct.price,
             'type': newProduct.type,
           }));
-      _items[prodIndex] = newProduct;
+      items[prodIndex] = newProduct;
+      _items = [...items];
       print(newProduct.title + '<<<<<<<<<<<<<<<<<<<<<<<<<');
 
       notifyListeners();
@@ -169,9 +174,10 @@ class Products with ChangeNotifier {
     http.Response response;
     final url =
         'https://shop-app-8948a-default-rtdb.firebaseio.com/products/$id.json?auth=$autToken';
+    final uri = Uri.parse(url);
     int x = 0;
 
-    response = await http.delete(url);
+    response = await http.delete(uri);
     if (response.statusCode >= 400) {
       throw ('error');
     } else {

@@ -1,8 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/models/http_exception.dart';
+import 'package:flutter_complete_guide/models/users.dart';
+import 'package:flutter_complete_guide/providers/Users.dart';
 import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:flutter_complete_guide/screens/product_detail_screen.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -127,6 +127,7 @@ class _AuthCardState extends State<AuthCard>
   }
 
   Map<String, String> _authData = {
+    'name': '',
     'email': '',
     'password': '',
   };
@@ -170,9 +171,20 @@ class _AuthCardState extends State<AuthCard>
       } else {
         // Sign user up
         await Provider.of<Auth>(context, listen: false).signup(
+          _authData['name'],
           _authData['email'],
           _authData['password'],
         );
+        var x = Provider.of<Auth>(context, listen: false);
+        print(Provider.of<Auth>(context, listen: false).isAuth.toString());
+        print(Provider.of<Auth>(context, listen: false).token.toString());
+        await Provider.of<Users>(context, listen: false).addUser(
+            users(
+              name: _authData['name'],
+              email: _authData['email'],
+            ),
+            x.uerId,
+            x.token);
       }
       Navigator.of(context).pushReplacementNamed(ProductDetailScreen.routeName);
     } on HttpException catch (error) {
@@ -249,6 +261,23 @@ class _AuthCardState extends State<AuthCard>
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
+                    if (_authMode == AuthMode.Signup)
+                      TextFormField(
+                        decoration: InputDecoration(
+                            labelStyle: TextStyle(fontSize: 12),
+                            labelText: 'Name',
+                            prefixIcon: Icon(Icons.perm_identity)),
+                        keyboardType: TextInputType.name,
+                        textInputAction: TextInputAction.next,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Invalid Name!';
+                          }
+                        },
+                        onSaved: (value) {
+                          _authData['name'] = value;
+                        },
+                      ),
                     TextFormField(
                       decoration: InputDecoration(
                           labelStyle: TextStyle(fontSize: 12),
@@ -289,8 +318,10 @@ class _AuthCardState extends State<AuthCard>
                     if (_authMode == AuthMode.Signup)
                       TextFormField(
                         enabled: _authMode == AuthMode.Signup,
-                        decoration:
-                            InputDecoration(labelText: 'Confirm Password'),
+                        decoration: InputDecoration(
+                          labelText: 'Confirm Password',
+                          prefixIcon: Icon(Icons.lock_outline),
+                        ),
                         obscureText: true,
                         validator: _authMode == AuthMode.Signup
                             ? (value) {

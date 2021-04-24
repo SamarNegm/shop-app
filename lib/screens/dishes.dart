@@ -35,7 +35,8 @@ class _dishesState extends State<dishes> {
         _isLoading = true;
       });
       try {
-        await Provider.of<Products>(context).fetchAndSetProducts(false, 'dishes');
+        await Provider.of<Products>(context)
+            .fetchAndSetProducts(false, 'dishes');
         setState(() {
           _isLoading = false;
         });
@@ -117,7 +118,7 @@ class _dishesState extends State<dishes> {
               color: Colors.white,
               child: _isLoading
                   ? Center(child: CircularProgressIndicator())
-                  : ProductsGrid(_showOnlyFavorites, 'cups'),
+                  : ProductsGrid(_showOnlyFavorites, 'dishes'),
             ),
           ))),
     );

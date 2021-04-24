@@ -99,6 +99,9 @@ class _AuthCardState extends State<AuthCard>
   AuthMode _authMode = AuthMode.Login;
   AnimationController _controller;
   Animation<Size> _heightAnimation;
+  TextEditingController tecName;
+  TextEditingController tecEmail;
+  TextEditingController tecConfirm;
   @override
   void initState() {
     super.initState();
@@ -263,6 +266,8 @@ class _AuthCardState extends State<AuthCard>
                   children: <Widget>[
                     if (_authMode == AuthMode.Signup)
                       TextFormField(
+                        controller: tecName,
+                        key: Key('t1'),
                         decoration: InputDecoration(
                             labelStyle: TextStyle(fontSize: 12),
                             labelText: 'Name',
@@ -279,6 +284,8 @@ class _AuthCardState extends State<AuthCard>
                         },
                       ),
                     TextFormField(
+                      controller: tecEmail,
+                      key: Key('t2'),
                       decoration: InputDecoration(
                           labelStyle: TextStyle(fontSize: 12),
                           labelText: 'E-Mail',
@@ -295,6 +302,7 @@ class _AuthCardState extends State<AuthCard>
                       },
                     ),
                     TextFormField(
+                      key: Key('t3'),
                       decoration: InputDecoration(
                           labelText: 'Password',
                           labelStyle: TextStyle(
@@ -317,6 +325,8 @@ class _AuthCardState extends State<AuthCard>
                     ),
                     if (_authMode == AuthMode.Signup)
                       TextFormField(
+                        controller: tecConfirm,
+                        key: Key('t4'),
                         enabled: _authMode == AuthMode.Signup,
                         decoration: InputDecoration(
                           labelText: 'Confirm Password',
@@ -340,20 +350,32 @@ class _AuthCardState extends State<AuthCard>
                       SizedBox(
                         height: 50,
                         width: deviceSize.width * 0.94,
-                        child: RaisedButton(
-                          child: Text(
-                            _authMode == AuthMode.Login ? 'Sign in' : 'Sign up',
-                            style: TextStyle(color: Colors.white, fontSize: 24),
-                          ),
-                          onPressed: _submit,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
+                        child: Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 30.0, vertical: 8.0),
-                          color: HexColor('#222831'),
-                          textColor:
-                              Theme.of(context).primaryTextTheme.button.color,
+                          child: ElevatedButton(
+                            key: Key('rb1'),
+                            child: Text(
+                              _authMode == AuthMode.Login
+                                  ? 'Sign in'
+                                  : 'Sign up',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 24),
+                            ),
+                            onPressed: _submit,
+                            style: ButtonStyle(
+                                textStyle: MaterialStateProperty.all(TextStyle(
+                                    color: Theme.of(context)
+                                        .primaryTextTheme
+                                        .button
+                                        .color)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    HexColor('#222831')),
+                                shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ))),
+                          ),
                         ),
                       ),
                     Padding(

@@ -4,13 +4,16 @@ import 'package:flutter_complete_guide/widgets/products_grid.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
-class CupsOverView extends StatefulWidget {
+class ProductOverView extends StatefulWidget {
   static const routeName = '/cupsOcerView';
+  final String type;
+
+  const ProductOverView({Key key, @required this.type}) : super(key: key);
   @override
-  _CupsOverViewState createState() => _CupsOverViewState();
+  _ProductOverViewState createState() => _ProductOverViewState();
 }
 
-class _CupsOverViewState extends State<CupsOverView> {
+class _ProductOverViewState extends State<ProductOverView> {
   var _isInit = true;
   var _isLoading = false;
 
@@ -30,7 +33,8 @@ class _CupsOverViewState extends State<CupsOverView> {
         _isLoading = true;
       });
       try {
-        await Provider.of<Products>(context).fetchAndSetProducts(false, 'cups');
+        await Provider.of<Products>(context)
+            .fetchAndSetProducts(false, widget.type);
         setState(() {
           _isLoading = false;
         });
@@ -61,7 +65,7 @@ class _CupsOverViewState extends State<CupsOverView> {
               color: Colors.white,
               child: _isLoading
                   ? Center(child: CircularProgressIndicator())
-                  : ProductsGrid(false, 'cups'),
+                  : ProductsGrid(false, widget.type),
             ),
           ))),
     );

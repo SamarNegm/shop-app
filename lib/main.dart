@@ -2,9 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/models/users.dart';
 import 'package:flutter_complete_guide/providers/Users.dart';
+import 'package:flutter_complete_guide/screens/Ordering.dart';
+import 'package:flutter_complete_guide/screens/ProductOverView.dart';
+import 'package:flutter_complete_guide/screens/ProductType.dart';
 import 'package:flutter_complete_guide/screens/auth_screen.dart';
-import 'package:flutter_complete_guide/screens/cups.dart';
-import 'package:flutter_complete_guide/screens/cupsOverView.dart';
 import 'package:flutter_complete_guide/screens/splash_screen.dart';
 import 'package:flutter_complete_guide/screens/types.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -84,8 +85,9 @@ class MyApp extends StatelessWidget {
             Types.routeName: (ctx) => Types(),
             EditProductScreen.routeName: (ctx) => EditProductScreen(),
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-            Cups.routeName: (ctx) => Cups(),
-            CupsOverView.routeName: (ctx) => CupsOverView(),
+            ProductType.routeName: (ctx) => ProductType(),
+            ProductOverView.routeName: (ctx) => ProductOverView(),
+            Ordering.routeName: (ctx) => Ordering(),
           },
         ),
       ),

@@ -3,24 +3,25 @@ import 'package:flutter_complete_guide/providers/cart.dart';
 import 'package:flutter_complete_guide/providers/products.dart';
 import 'package:flutter_complete_guide/screens/Favorits.dart';
 import 'package:flutter_complete_guide/screens/OverView.dart';
+import 'package:flutter_complete_guide/screens/ProductOverView.dart';
 import 'package:flutter_complete_guide/screens/cart_screen.dart';
-import 'package:flutter_complete_guide/screens/cupsOverView.dart';
 import 'package:flutter_complete_guide/screens/edit_product_screen.dart';
-import 'package:flutter_complete_guide/screens/products_overview_screen.dart';
 import 'package:flutter_complete_guide/screens/profil.dart';
 import 'package:flutter_complete_guide/widgets/app_drawer.dart';
 import 'package:flutter_complete_guide/widgets/badge.dart';
-import 'package:flutter_complete_guide/widgets/products_grid.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
-class Cups extends StatefulWidget {
-  static const routeName = '/cups';
+class ProductType extends StatefulWidget {
+  static const routeName = '/productType';
+
+  const ProductType({Key key}) : super(key: key);
   @override
-  _CupsState createState() => _CupsState();
+  _ProductTypeState createState() => _ProductTypeState();
 }
 
-class _CupsState extends State<Cups> {
+class _ProductTypeState extends State<ProductType> {
+  String type = '';
   var _showOnlyFavorites = false;
   var _isInit = true;
   var _isLoading = false;
@@ -28,11 +29,15 @@ class _CupsState extends State<Cups> {
   @override
   Future<void> didChangeDependencies() async {
     if (_isInit) {
+      type = ModalRoute.of(context).settings.arguments as String;
+      print('type init ' + type);
       setState(() {
         _isLoading = true;
       });
       try {
-        await Provider.of<Products>(context).fetchAndSetProducts(false, 'cups');
+        print('type ' + type.toString());
+
+        await Provider.of<Products>(context).fetchAndSetProducts(false, type);
         setState(() {
           _isLoading = false;
         });
@@ -102,8 +107,9 @@ class _CupsState extends State<Cups> {
         ),
       ),
       drawer: AppDrawer(),
-      body:
-          _selectedPageIndex < 0 ? CupsOverView() : _pages[_selectedPageIndex],
+      body: _selectedPageIndex < 0
+          ? ProductOverView(type: type)
+          : _pages[_selectedPageIndex],
 
       //  Container(
       //     color: HexColor('#f1d2c5'),

@@ -85,8 +85,7 @@ flutter:
 
 
   assets:
-    - assets/images/logo.png
-    - assets/images/bag.png
+    - assets/images/
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

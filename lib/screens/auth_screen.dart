@@ -348,7 +348,7 @@ class _AuthCardState extends State<AuthCard>
                       CircularProgressIndicator()
                     else
                       SizedBox(
-                        height: 50,
+                        height: 65,
                         width: deviceSize.width * 0.94,
                         child: Padding(
                           padding: EdgeInsets.symmetric(

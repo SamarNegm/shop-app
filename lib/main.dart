@@ -2,13 +2,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/models/users.dart';
 import 'package:flutter_complete_guide/providers/Users.dart';
+import 'package:flutter_complete_guide/screens/CreditCard.dart';
 import 'package:flutter_complete_guide/screens/Ordering.dart';
 import 'package:flutter_complete_guide/screens/ProductOverView.dart';
 import 'package:flutter_complete_guide/screens/ProductType.dart';
 import 'package:flutter_complete_guide/screens/auth_screen.dart';
 import 'package:flutter_complete_guide/screens/splash_screen.dart';
 import 'package:flutter_complete_guide/screens/types.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
 import './providers/auth.dart';
@@ -65,8 +65,8 @@ class MyApp extends StatelessWidget {
           title: 'MyShop',
           theme: ThemeData(
             primarySwatch: Colors.red,
-            primaryColor: HexColor('#f1d2c5'),
-            accentColor: HexColor('#d4dee2'),
+            primaryColor: Color(0xfff1d2c5),
+            accentColor: Color(0xffd4dee2),
             fontFamily: 'Lato',
           ),
           home: auth.isAuth
@@ -88,6 +88,7 @@ class MyApp extends StatelessWidget {
             ProductType.routeName: (ctx) => ProductType(),
             ProductOverView.routeName: (ctx) => ProductOverView(),
             Ordering.routeName: (ctx) => Ordering(),
+            CreditCard.routeName: (ctx) => CreditCard(),
           },
         ),
       ),

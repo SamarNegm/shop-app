@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/screens/CreditCard.dart';
 
 class Ordering extends StatefulWidget {
   static const routeName = '/Ordering';
@@ -60,26 +61,52 @@ class _OrderingState extends State<Ordering> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Card(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(30))),
                       elevation: 4,
                       shadowColor: Colors.black,
                       color: Color(0xffF4F4F4),
-                      child: ListTile(
-                          onTap: () {
-                            //Open the Map
-                          },
-                          title: Text('Enter Address',
-                              style: TextStyle(
-                                  fontSize: 20, color: Color(0xff707070))),
-                          trailing: Icon(Icons.navigate_next_rounded),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                          )),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            counterStyle: TextStyle(
+                                fontSize: 20, color: Color(0xff707070)),
+                            labelText: 'Address',
+                            fillColor: Color(0xffF4F4F4),
+                            // border: OutlineInputBorder(
+                            //     borderRadius:
+                            //         BorderRadius.all(Radius.circular(30)
+                            //         )
+                            // )
+                          ),
+                        ),
+                      ),
                     ),
                   ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(20.0),
+                  //   child: Card(
+                  //     shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.all(Radius.circular(30))),
+                  //     elevation: 4,
+                  //     shadowColor: Colors.black,
+                  //     color: Color(0xffF4F4F4),
+                  //     child: ListTile(
+                  //         onTap: () {
+                  //           //Open the Map
+                  //         },
+                  //         title: Text('Enter Address',
+                  //             style: TextStyle(
+                  //                 fontSize: 20, color: Color(0xff707070))),
+                  //         trailing: Icon(Icons.navigate_next_rounded),
+                  //         shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.all(Radius.circular(30)),
+                  //         )),
+                  //   ),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: SizedBox(
@@ -139,7 +166,11 @@ class _OrderingState extends State<Ordering> {
                     width: MediaQuery.of(context).size.width,
                     height: 57,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (dropdownValue == 'Credit card') {
+                          Navigator.of(context).pushNamed(CreditCard.routeName);
+                        }
+                      },
                       child: Text('Continue'),
                       style: ButtonStyle(
                           textStyle: MaterialStateProperty.all(TextStyle(

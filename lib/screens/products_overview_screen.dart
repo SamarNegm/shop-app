@@ -86,18 +86,6 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-//      Container(
-//          color: HexColor('#f1d2c5'),
-//          child: Container(
-//              child: ClipRRect(
-//            borderRadius: BorderRadius.only(topLeft: Radius.circular(40.0)),
-//               child: Container(
-//                color: Colors.white,
-//                child: _isLoading
-//                  ? Center(child: CircularProgressIndicator())
-//                  : ProductsGrid(_showOnlyFavorites,'Discover'),
-//            ),
-//          ))),
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(40),

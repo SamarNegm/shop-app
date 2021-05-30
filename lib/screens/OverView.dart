@@ -13,7 +13,7 @@ class OverView extends StatefulWidget {
 class _OverViewState extends State<OverView> {
   var _isInit = true;
   var _isLoading = false;
-  bool _dispose=false;
+  bool _dispose = false;
 
   @override
   void initState() {
@@ -31,7 +31,8 @@ class _OverViewState extends State<OverView> {
         _isLoading = true;
       });
       try {
-        if(_dispose)return;
+        if (_dispose) return;
+        print('whyyyy');
         await Provider.of<Products>(context).fetchAndSetProducts();
         setState(() {
           _isLoading = false;
@@ -48,8 +49,9 @@ class _OverViewState extends State<OverView> {
   @override
   void dispose() {
     // TODO: implement dispose
-    _dispose=true;
+
     Navigator.of(context).pushNamed(ProductsOverviewScreen.routName);
+    _dispose = true;
     super.dispose();
   }
 

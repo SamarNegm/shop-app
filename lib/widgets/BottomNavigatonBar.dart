@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/screens/Favorits.dart';
 import 'package:flutter_complete_guide/screens/OverView.dart';
 import 'package:flutter_complete_guide/screens/profil.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 class bottomNavigationBar extends StatefulWidget {
   BuildContext context;
@@ -52,27 +51,27 @@ class _bottomNavigationBarState extends State<bottomNavigationBar> {
 
     return BottomNavigationBar(
       onTap: _selectPage,
-      backgroundColor: HexColor('#f1d2c5'),
-      selectedItemColor: HexColor('#222831'),
+      backgroundColor: Color(0xff1d2c5),
+      selectedItemColor: Color(0xf222831),
       currentIndex: _selectedPageIndex,
       // type: BottomNavigationBarType.fixed,
       items: [
         BottomNavigationBarItem(
-          backgroundColor: HexColor('#f1d2c5'),
+          backgroundColor: Color(0xff1d2c5),
           icon: _selectedPageIndex == 0
               ? Icon(Icons.home)
               : Icon(Icons.home_outlined),
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          backgroundColor: HexColor('#f1d2c5'),
+          backgroundColor: Color(0xff1d2c5),
           icon: _selectedPageIndex == 1
               ? Icon(Icons.favorite)
               : Icon(Icons.favorite_border),
           label: 'Favorites',
         ),
         BottomNavigationBarItem(
-          backgroundColor: HexColor('#f1d2c5'),
+          backgroundColor: Color(0xff1d2c5),
           icon: _selectedPageIndex == 2
               ? Icon(Icons.person)
               : Icon(Icons.person_outlined),

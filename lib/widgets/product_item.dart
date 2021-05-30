@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/auth.dart';
-import 'package:flutter_complete_guide/providers/products.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
-import '../screens/product_detail_screen.dart';
-import '../providers/product.dart';
+
 import '../providers/cart.dart';
+import '../providers/product.dart';
+import '../screens/product_detail_screen.dart';
 
 class ProductItem extends StatelessWidget {
   @override
@@ -24,12 +23,18 @@ class ProductItem extends StatelessWidget {
             );
           },
           child: Hero(
-            tag:product.id,
+            tag: product.id,
             child: Container(
               color: Theme.of(context).accentColor,
-              child: Image.network(
-                product.imageUrl,
-                fit: BoxFit.scaleDown,
+              child: Center(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height * .2,
+                  width: MediaQuery.of(context).size.height * .2,
+                  child: Image.network(
+                    product.imageUrl,
+                    fit: BoxFit.scaleDown,
+                  ),
+                ),
               ),
             ),
           ),
@@ -39,7 +44,7 @@ class ProductItem extends StatelessWidget {
           child: Text(
             product.title,
             style: TextStyle(
-              color: HexColor('#222831'),
+              color: Color(0xff222831),
             ),
           ),
         ),
@@ -51,7 +56,7 @@ class ProductItem extends StatelessWidget {
               icon: Icon(
                 v.isFavorite ? Icons.favorite : Icons.favorite_border,
               ),
-              color: HexColor('#222831'),
+              color: Color(0xff222831),
               onPressed: () {
                 v.toggleFavoriteStatus(authData.token, authData.uerId);
               },
@@ -85,7 +90,7 @@ class ProductItem extends StatelessWidget {
                 ),
               );
             },
-            color: HexColor('#222831'),
+            color: Color(0xff222831),
           ),
         ),
       ),

@@ -15,7 +15,6 @@ class ProductsGrid extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
     final productsData = Provider.of<Products>(context);
     var products = showFavs ? productsData.favoriteItems : productsData.items;
-    print(products.length.toString() + ' why');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

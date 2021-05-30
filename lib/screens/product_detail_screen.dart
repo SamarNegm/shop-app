@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:flutter_complete_guide/providers/cart.dart';
-import 'package:flutter_complete_guide/providers/product.dart';
 import 'package:flutter_complete_guide/screens/cart_screen.dart';
 import 'package:flutter_complete_guide/screens/products_overview_screen.dart';
 import 'package:provider/provider.dart';
@@ -21,24 +20,36 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int itemCount = 1;
-
+  var loadedProduct = null;
+  var productId;
   bool added = false;
+  double totalPrice = 0;
+  var authData;
+  var cart;
+
+  @override
+  void didChangeDependencies() {
+    productId = ModalRoute.of(context).settings.arguments as String;
+    if (productId != null) {
+      loadedProduct = Provider.of<Products>(
+        context,
+        listen: true,
+      ).findById(productId);
+      totalPrice = loadedProduct.price;
+    }
+    authData = Provider.of<Auth>(context, listen: false);
+    cart = Provider.of<Cart>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
-    final productId =
-        ModalRoute.of(context).settings.arguments as String; // is the id!
+    // is the id!
     if (productId == null) {
       print('ok');
       return ProductsOverviewScreen();
     }
-    final loadedProduct = Provider.of<Products>(
-      context,
-      listen: true,
-    ).findById(productId);
-    double totalPrice = loadedProduct.price;
-    final authData = Provider.of<Auth>(context, listen: false);
-    final cart = Provider.of<Cart>(context, listen: false);
+    final deviceSize = MediaQuery.of(context).size;
+
     void incAndDecrement(int curNum, String operatin) {
       if (operatin == '+') {
         curNum++;
@@ -50,6 +61,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         print('hi');
         itemCount = curNum;
         totalPrice = loadedProduct.price * itemCount;
+        print('hi' + totalPrice.toString() + '  ' + itemCount.toString());
       });
     }
 
@@ -120,7 +132,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Hero(
-                                          tag:loadedProduct.id,
+                                          tag: loadedProduct.id,
                                           child: Container(
                                             height: deviceSize.height * .2,
                                             width: deviceSize.height * .2,
@@ -174,11 +186,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  '\$${(totalPrice != 0 ? totalPrice : loadedProduct.price)}',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 35,
+                                Container(
+                                  child: Text(
+                                    '\$$totalPrice',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 35,
+                                    ),
                                   ),
                                 ),
                                 Container(
@@ -292,5 +306,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                 ),
         ]));
+  }
+
+  @override
+  void initState() {
+    // loadedProduct = Provider.of<Products>(
+    //   context,
+    //   listen: true,
+    // ).findById(productId);
+    // totalPrice = loadedProduct.price;
   }
 }

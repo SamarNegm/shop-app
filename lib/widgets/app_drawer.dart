@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/auth.dart';
-import 'package:flutter_complete_guide/screens/Ordering.dart';
 import 'package:flutter_complete_guide/screens/ProductType.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/orders_screen.dart';
@@ -14,7 +12,7 @@ class AppDrawer extends StatelessWidget {
       child: Center(
         child: Container(
           //  color: Theme.of(context).primaryColor,
-          color: HexColor('#222831'),
+          color: Color(0xff222831),
           child: SingleChildScrollView(
             child: SizedBox(
               height: MediaQuery.of(context).size.height,
@@ -119,27 +117,6 @@ class AppDrawer extends StatelessWidget {
                               Navigator.of(context).pushReplacementNamed(
                                   ProductType.routeName,
                                   arguments: 'spoons');
-                            },
-                          ),
-                          Divider(color: Theme.of(context).primaryColor),
-                          ListTile(
-                            leading: SizedBox(
-                              height: 30,
-                              width: 30,
-                              child: Image(
-                                image: AssetImage('assets/images/cutlery.png'),
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                            title: Text(
-                              'Ordering',
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                            onTap: () {
-                              Navigator.of(context).pushReplacementNamed(
-                                Ordering.routeName,
-                              );
                             },
                           ),
                           Divider(color: Theme.of(context).primaryColor),

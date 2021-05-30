@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/products.dart';
 import 'package:flutter_complete_guide/screens/edit_product_screen.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
 class userProductItem2 extends StatelessWidget {
@@ -36,7 +35,7 @@ class userProductItem2 extends StatelessWidget {
               IconButton(
                 icon: Icon(
                   Icons.edit,
-                  color: HexColor('#222831'),
+                  color: Color(0xff222831),
                 ),
                 onPressed: () async {
                   print('id is ' + id);

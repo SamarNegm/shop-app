@@ -183,9 +183,10 @@ class _AuthCardState extends State<AuthCard>
         print(Provider.of<Auth>(context, listen: false).token.toString());
         await Provider.of<Users>(context, listen: false).addUser(
             users(
-              name: _authData['name'],
-              email: _authData['email'],
-            ),
+                name: _authData['name'],
+                email: _authData['email'],
+                profilePicUrl: '',
+                id: ''),
             x.uerId,
             x.token);
       }

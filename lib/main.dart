@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/models/users.dart';
 import 'package:flutter_complete_guide/providers/Users.dart';
 import 'package:flutter_complete_guide/screens/CreditCard.dart';
+import 'package:flutter_complete_guide/screens/EditProfile.dart';
 import 'package:flutter_complete_guide/screens/Ordering.dart';
 import 'package:flutter_complete_guide/screens/ProductOverView.dart';
 import 'package:flutter_complete_guide/screens/ProductType.dart';
 import 'package:flutter_complete_guide/screens/auth_screen.dart';
+import 'package:flutter_complete_guide/screens/profil.dart';
 import 'package:flutter_complete_guide/screens/splash_screen.dart';
 import 'package:flutter_complete_guide/screens/types.dart';
 import 'package:provider/provider.dart';
@@ -55,8 +57,8 @@ class MyApp extends StatelessWidget {
           update: (ctx, auth, previousUsers) => Users(
               auth.token,
               previousUsers == null
-                  ? users(name: '', email: '')
-                  : previousUsers.usres,
+                  ? users(name: '', email: '', profilePicUrl: '')
+                  : previousUsers.myUser,
               auth.uerId),
         ),
       ],
@@ -88,6 +90,8 @@ class MyApp extends StatelessWidget {
             ProductType.routeName: (ctx) => ProductType(),
             ProductOverView.routeName: (ctx) => ProductOverView(),
             Ordering.routeName: (ctx) => Ordering(),
+            profile.routeName: (ctx) => profile(),
+            EditProfile.routeName: (ctx) => EditProfile(),
             CreditCard.routeName: (ctx) => CreditCard(),
           },
         ),

@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/models/users.dart';
 import 'package:http/http.dart' as http;
@@ -10,37 +12,38 @@ class Users with ChangeNotifier {
   String userId;
 
   Users(this.token, this._users, this.userId);
-
-  users get usres {
+  users get myUser {
     return _users;
   }
 
   Future<void> fetchCurrentSetUsers() async {
-    print('**********1');
-    print('**********1' + userId + ' ' + token);
     final url =
-        'https://shop-app-8948a-default-rtdb.firebaseio.com/myUsers/$userId/$userId.json?auth=$token';
+        'https://shop-app-8948a-default-rtdb.firebaseio.com/myUsers/$userId.json?auth=$token';
     final uri = Uri.parse(url);
-    print('**********1');
     try {
       final response = await http.get(uri);
-      print('**********2');
       final chatchedData = json.decode(response.body);
-      print('**********3 chatchedData is ' + chatchedData.toString());
       if (chatchedData == null) {
-        print('**********4');
         _users = null;
         notifyListeners();
         return null;
       }
       users loadedUser = null;
-      print('**********5');
-      chatchedData.forEach((userId, user) {
-        loadedUser = users(name: user['name'], email: user['email']);
-        print(user['name'] + user['email'] + '  data');
-      });
+
+      // chatchedData.forEach((uId, user) {
+      //   print(user.toString() + '<<');
+      //   loadedUser = users(
+      //       name: user['name'],
+      //       email: user['email'],
+      //       profilePicUrl: user['profilePicUrl'],
+      //       id: user['id']);
+      // });
+      loadedUser = users(
+          name: chatchedData['name'],
+          email: chatchedData['email'],
+          profilePicUrl: chatchedData['profilePicUrl'],
+          id: chatchedData['id']);
       _users = loadedUser;
-      print('Cuttent user is ' + loadedUser.name);
       notifyListeners();
     } catch (error) {
       throw (error);
@@ -48,17 +51,20 @@ class Users with ChangeNotifier {
   }
 
   Future<void> addUser(users user, id, token) async {
+    var response;
     print('adding new user' + user.name + '  ' + user.email);
     print('adding new user' + userId.toString() + '  ' + token.toString());
     final url =
-        'https://shop-app-8948a-default-rtdb.firebaseio.com/myUsers/$id/$id.json?auth=$token';
+        'https://shop-app-8948a-default-rtdb.firebaseio.com/myUsers/$id.json?auth=$token';
     final uri = Uri.parse(url);
     try {
-      final response = await http.post(
+      response = await http.put(
         uri,
         body: json.encode({
           'name': user.name,
           'email': user.email,
+          'profilePicUrl': user.profilePicUrl,
+          'id': ''
         }),
       );
     } catch (error) {
@@ -66,9 +72,49 @@ class Users with ChangeNotifier {
       throw error;
     }
     _users = users(
-      email: user.email,
-      name: user.name,
-    );
+        email: user.email,
+        name: user.name,
+        profilePicUrl: user.profilePicUrl,
+        id: json.decode(response.body)['name']);
+    notifyListeners();
+  }
+
+  Future<void> upDate(users user, id, String token, File image) async {
+    print('adding new user' + user.name + '  ' + user.email);
+    print('adding new user' + userId.toString() + '  ' + token.toString());
+    final url =
+        'https://shop-app-8948a-default-rtdb.firebaseio.com/myUsers/$id.json?auth=$token';
+    firebase_storage.FirebaseStorage storage =
+        firebase_storage.FirebaseStorage.instance;
+    print('ok11');
+    final ref = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('userProfileimag')
+        .child(user.id + '.jpg');
+    await ref.putFile(image);
+    print('ok3');
+    final imageUrl = await ref.getDownloadURL();
+    print('ok4 ' + imageUrl);
+    final uri = Uri.parse(url);
+    try {
+      final response = await http.put(
+        uri,
+        body: json.encode({
+          'name': user.name,
+          'email': user.email,
+          'profilePicUrl': imageUrl,
+          'id': user.id
+        }),
+      );
+    } catch (error) {
+      print(error);
+      throw error;
+    }
+    _users = users(
+        email: user.email,
+        name: user.name,
+        profilePicUrl: imageUrl,
+        id: user.id);
     notifyListeners();
   }
 }

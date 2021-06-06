@@ -79,18 +79,16 @@ class Users with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> upDate(users user, id, String token, File image) async {
-    print('adding new user' + user.name + '  ' + user.email);
-    print('adding new user' + userId.toString() + '  ' + token.toString());
+  Future<void> upDate(File image) async {
     final url =
-        'https://shop-app-8948a-default-rtdb.firebaseio.com/myUsers/$id.json?auth=$token';
+        'https://shop-app-8948a-default-rtdb.firebaseio.com/myUsers/$userId.json?auth=$token';
     firebase_storage.FirebaseStorage storage =
         firebase_storage.FirebaseStorage.instance;
     print('ok11');
     final ref = firebase_storage.FirebaseStorage.instance
         .ref()
         .child('userProfileimag')
-        .child(user.id + '.jpg');
+        .child(userId + '.jpg');
     await ref.putFile(image);
     print('ok3');
     final imageUrl = await ref.getDownloadURL();
@@ -100,10 +98,10 @@ class Users with ChangeNotifier {
       final response = await http.put(
         uri,
         body: json.encode({
-          'name': user.name,
-          'email': user.email,
+          'name': _users.name,
+          'email': _users.email,
           'profilePicUrl': imageUrl,
-          'id': user.id
+          'id': _users.id
         }),
       );
     } catch (error) {
@@ -111,10 +109,10 @@ class Users with ChangeNotifier {
       throw error;
     }
     _users = users(
-        email: user.email,
-        name: user.name,
+        email: _users.email,
+        name: _users.name,
         profilePicUrl: imageUrl,
-        id: user.id);
+        id: _users.id);
     notifyListeners();
   }
 }

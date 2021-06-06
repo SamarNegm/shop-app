@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/Users.dart';
-import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:flutter_complete_guide/providers/products.dart';
 import 'package:flutter_complete_guide/widgets/user_product_item2.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -32,6 +31,7 @@ class _profileState extends State<profile> {
     // });
     super.initState();
   }
+
   @override
   Future<void> didChangeDependencies() async {
     if (_isInit) {
@@ -74,12 +74,7 @@ class _profileState extends State<profile> {
       if (pickedFile != null) {
         setState(() {
           _storedImage = File(pickedFile.path);
-
-          Provider.of<Users>(context, listen: false).upDate(
-              Provider.of<Users>(context, listen: false).myUser,
-              Provider.of<Auth>(context, listen: false).uerId,
-              Provider.of<Auth>(context, listen: false).token,
-              _storedImage);
+          Provider.of<Users>(context, listen: false).upDate(_storedImage);
         });
       } else {
         print('No image selected.');
@@ -132,21 +127,25 @@ class _profileState extends State<profile> {
                                       child: Column(
                                         children: [
                                           Consumer<Users>(
-                                            builder: (ctx, myUser, _) =>
-                                                CircleAvatar(
-                                              radius: 60,
-                                              child:
-                                                  myUser.myUser.profilePicUrl ==
-                                                          ''
-                                                      ? Container()
-                                                      : Container(
-                                                          child: Image.network(
+                                              builder: (ctx, myUser, _) =>
+                                                  CircleAvatar(
+                                                    radius: 60,
+                                                    child: myUser.myUser
+                                                                .profilePicUrl ==
+                                                            ''
+                                                        ? Container()
+                                                        : ClipOval(
+                                                            child:
+                                                                Image.network(
                                                               myUser.myUser
-                                                                  .profilePicUrl),
-                                                        ),
-                                            ),
-                                          ),
-                                          ElevatedButton.icon(
+                                                                  .profilePicUrl,
+                                                              fit: BoxFit.cover,
+                                                              height: 120,
+                                                              width: 120,
+                                                            ),
+                                                          ),
+                                                  )),
+                                          TextButton.icon(
                                               onPressed: () {
                                                 getImage();
                                               },
@@ -168,33 +167,31 @@ class _profileState extends State<profile> {
                                     );
                                   }, childCount: 1),
                                 ),
-                              SliverGrid(
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      childAspectRatio: 1.5,
-                                      crossAxisSpacing: 10,
-                                      mainAxisSpacing: 10,
-                                    ),
-                                    delegate: SliverChildBuilderDelegate(
-                                        (BuildContext ctx, int i) {
-                                      print(productsData[i].title +
-                                          ' ********title');
-
-                                      return Padding(
-                                        padding: i % 2 == 1
-                                            ? EdgeInsets.only(right: 12)
-                                            : EdgeInsets.only(left: 12),
-                                        child: userProductItem2(
-                                          id: productsData[i].id,
-                                          title: productsData[i].title,
-                                          imageUrl:
-                                              productsData[i].imageUrl,
-                                        ),
-                                      );
-                                    }, childCount: productsData.length),
+                                SliverGrid(
+                                   gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 1 / 1.25,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10,
                                   ),
+                                  delegate: SliverChildBuilderDelegate(
+                                      (BuildContext ctx, int i) {
+                                    print(productsData[i].title +
+                                        ' ********title');
 
+                                    return Padding(
+                                      padding: i % 2 == 1
+                                          ? EdgeInsets.only(right: 12)
+                                          : EdgeInsets.only(left: 12),
+                                      child: userProductItem2(
+                                        id: productsData[i].id,
+                                        title: productsData[i].title,
+                                        imageUrl: productsData[i].imageUrl,
+                                      ),
+                                    );
+                                  }, childCount: productsData.length),
+                                ),
                               ],
                             ),
                           )),

@@ -115,6 +115,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _priceFocusNode.dispose();
     _descriptionFocusNode.dispose();
     //_imageUrlController.dispose();
+
     _type.dispose();
     super.dispose();
   }

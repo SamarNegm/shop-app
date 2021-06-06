@@ -29,10 +29,10 @@ class AppDrawer extends StatelessWidget {
                         children: <Widget>[
                           Divider(),
                           ListTile(
-                            leading: Icon(Icons.shop,
+                            leading: Icon(Icons.home_outlined,
                                 color: Theme.of(context).primaryColor),
                             title: Text(
-                              'Shop',
+                              'Home',
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor),
                             ),
@@ -42,8 +42,12 @@ class AppDrawer extends StatelessWidget {
                           ),
                           Divider(color: Theme.of(context).primaryColor),
                           ListTile(
-                            leading: Icon(Icons.payment,
-                                color: Theme.of(context).primaryColor),
+                            leading: SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: Icon(Icons.payment_outlined,
+                                  color: Theme.of(context).primaryColor),
+                            ),
                             title: Text(
                               'Orders',
                               style: TextStyle(
@@ -66,7 +70,7 @@ class AppDrawer extends StatelessWidget {
                               ),
                             ),
                             title: Text(
-                              'Cups',
+                              'Cups & Mugs',
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor),
                             ),
@@ -117,6 +121,27 @@ class AppDrawer extends StatelessWidget {
                               Navigator.of(context).pushReplacementNamed(
                                   ProductType.routeName,
                                   arguments: 'spoons');
+                            },
+                          ),
+                          Divider(color: Theme.of(context).primaryColor),
+                          ListTile(
+                            leading: SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: Image(
+                                image: AssetImage('assets/images/kettle.png'),
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                            title: Text(
+                              'Kettles & Pots',
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor),
+                            ),
+                            onTap: () {
+                              Navigator.of(context).pushReplacementNamed(
+                                  ProductType.routeName,
+                                  arguments: 'kettle');
                             },
                           ),
                           Divider(color: Theme.of(context).primaryColor),
